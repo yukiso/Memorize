@@ -38,6 +38,7 @@ struct ContentView: View {
                 ForEach(themes.elements, id: \.key) { (key, newTheme) in
                     Button {
                         emojis = newTheme.emojis.shuffled()
+                        emojiNum = Int.random(in: 4...emojis.count)
                     } label: {
                         VStack{
                             Image(systemName: newTheme.icon)
