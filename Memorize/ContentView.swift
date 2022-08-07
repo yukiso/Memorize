@@ -37,7 +37,7 @@ struct ContentView: View {
             HStack(alignment: .center) {
                 ForEach(themes.elements, id: \.key) { (key, newTheme) in
                     Button {
-                        emojis = newTheme.emojis
+                        emojis = newTheme.emojis.shuffled()
                     } label: {
                         VStack{
                             Image(systemName: newTheme.icon)
