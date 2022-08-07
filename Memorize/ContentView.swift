@@ -6,9 +6,21 @@
 //
 
 import SwiftUI
+import OrderedCollections
+
+struct Theme {
+    var emojis: [String]
+    var icon: String
+}
+
+let themes: OrderedDictionary = [
+    "Vehicles": Theme(emojis: ["🚗", "🚕", "🚙", "🚌", "🚎", "🏎", "🚓", "🚑", "🚒", "🚐", "🛻", "🚚", "🚛", "🚜", "🦯", "🦽", "🦼", "🩼", "🛴", "🚲", "🛵", "🏍", "🛺", "✈️", "🚁"], icon: "car"),
+    "Flags": Theme(emojis: ["🇺🇳", "🇨🇴", "🇫🇮", "🇫🇷", "🇩🇪", "🇬🇬", "🇬🇼", "🇪🇺", "🇪🇷", "🇬🇶"], icon: "flag"),
+    "Animals": Theme(emojis: ["🐶", "🐨", "🦊", "🐻", "🐼", "🐹", "🐭", "🐷"], icon: "pawprint")
+]
 
 struct ContentView: View {
-    var emojis = ["🚗", "🚕", "🚙", "🚌", "🚎", "🏎", "🚓", "🚑", "🚒", "🚐", "🛻", "🚚", "🚛", "🚜", "🦯", "🦽", "🦼", "🩼", "🛴", "🚲", "🛵", "🏍", "🛺", "✈️", "🚁"]
+    @State var emojis = themes["Vehicles"]!.emojis
     @State var emojiNum = 8
     
     var body: some View {
@@ -22,8 +34,18 @@ struct ContentView: View {
                 }
             }
             Spacer()
-            HStack {
-                
+            HStack(alignment: .center) {
+                ForEach(themes.elements, id: \.key) { (key, newTheme) in
+                    Button {
+                        emojis = newTheme.emojis
+                    } label: {
+                        VStack{
+                            Image(systemName: newTheme.icon)
+                            Text(key).font(.subheadline)
+                        }
+                    }
+                    .padding(.horizontal)
+                }
             }
         }
         .font(.largeTitle)
