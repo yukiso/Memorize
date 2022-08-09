@@ -19,6 +19,14 @@ let themes: OrderedDictionary = [
     "Animals": Theme(emojis: ["🐶", "🐨", "🦊", "🐻", "🐼", "🐹", "🐭", "🐷"], icon: "pawprint")
 ]
 
+func widthThatBestFits(cardCount: Int) -> CGFloat {
+    let widthRatio: CGFloat = 2
+    let viewportArea: CGFloat = 200 * 400 // very rough aproximation | works for iPhone13 mini
+    let aspectRatioArea: CGFloat = widthRatio * 3
+
+    return ((viewportArea)/(aspectRatioArea*CGFloat(cardCount))).squareRoot()*widthRatio
+}
+
 struct ContentView: View {
     @State var emojis = themes["Vehicles"]!.emojis
     @State var emojiNum = 8
@@ -27,13 +35,14 @@ struct ContentView: View {
         VStack {
             Text("Memorize!")
             ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
+                LazyVGrid(columns:
+                            [GridItem(.adaptive(minimum: widthThatBestFits(cardCount: emojiNum), maximum: .infinity))]) {
                     ForEach(emojis[0..<emojiNum], id: \.self) { emoji in
                         CardView(content: emoji)
                     }
                 }
+                .padding()
             }
-            Spacer()
             HStack(alignment: .center) {
                 ForEach(themes.elements, id: \.key) { (key, newTheme) in
                     Button {
@@ -50,7 +59,6 @@ struct ContentView: View {
             }
         }
         .font(.largeTitle)
-        .padding(.horizontal)
     }
 }
 
